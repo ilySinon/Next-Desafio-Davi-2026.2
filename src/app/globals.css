@@ -3,6 +3,13 @@
 @theme {
   --font-anton: var(--font-anton);
   --font-inter: var(--font-inter);
+
+  
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1280px;
+  --breakpoint-xl: 1920px;
+  --breakpoint-2xl: 2560px;
+  --breakpoint-3xl: 3440px;
 }
 
 *,
