@@ -13,10 +13,146 @@ datasource db {
   provider = "postgresql"
 }
 
-model Product {
+model Usuario {
+  id           Int         @id @default(autoincrement())
+  nome         String
+  email        String      @unique
+  senha        String
+  imagemPerfil String?
+  
+  endereco    Endereco?
+  avaliacoes   Avaliacao[]
+  carrinhos    Carrinho[]
+  pedidos      Pedido[]
+}
+
+model Endereco {
   id          Int      @id @default(autoincrement())
-  title       String
-  description String
-  price       Float
-  createdAt   DateTime @default(now())
+  idUsuario   Int @unique
+  rua         String  
+  bairro      String
+  numero      String
+  complemento String?
+  cidade      String
+  estado      String
+  cep         String
+  
+  usuario    Usuario  @relation(fields: [idUsuario], references: [id])
+  pedidos     Pedido[]
+}
+
+model Categoria {
+  id                 Int       @id @default(autoincrement())
+  nomeCategoria      String
+  imagemCategoria    String?
+  descricaoCategoria String?
+  
+  produtos           Produto[]
+}
+
+model Produto {
+  id                 Int               @id @default(autoincrement())
+  nomeProduto        String
+  produtoDescricao   String
+  idCategoriaProduto Int
+  
+  categoria          Categoria         @relation(fields: [idCategoriaProduto], references: [id])
+  avaliacoes         Avaliacao[]
+  variacoes          VariacaoProduto[]
+}
+
+model Avaliacao {
+  id         Int      @id @default(autoincrement())
+  idUsuario  Int
+  idProduto  Int
+  comentario String?
+  nota       Int
+  
+  usuario    Usuario  @relation(fields: [idUsuario], references: [id])
+  produto    Produto  @relation(fields: [idProduto], references: [id])
+}
+
+model VariacaoProduto {
+  id            Int             @id @default(autoincrement())
+  nomeCor       String
+  idProduto     Int
+  nomeGenero    String
+  preco         Float
+  precoVenda    Float?
+  codigoProduto Int?
+  
+  produto       Produto         @relation(fields: [idProduto], references: [id])
+  imagens       ImagemProduto[]
+  estoques      Estoque[]
+}
+
+model ImagemProduto {
+  id            String          @id @default(uuid())
+  idItemProduto Int
+  nomeImagem    String
+  
+  variacao      VariacaoProduto @relation(fields: [idItemProduto], references: [id])
+}
+
+model Tamanho {
+  id            Int       @id @default(autoincrement())
+  nomeTamanho   String
+  ordemTamanhos Int
+  
+  estoques      Estoque[]
+}
+
+model Estoque {
+  id            Int             @id @default(autoincrement())
+  idItem        Int
+  idTamanho     Int
+  quantidade    Int
+  
+  variacao      VariacaoProduto @relation(fields: [idItem], references: [id])
+  tamanho       Tamanho         @relation(fields: [idTamanho], references: [id])
+  itensCarrinho ItemCarrinho[]
+  itensPedido   ItemPedido[]
+}
+
+model Carrinho {
+  id         Int            @id @default(autoincrement())
+  idUsuario  Int
+  valorTotal Float
+  
+  usuario    Usuario        @relation(fields: [idUsuario], references: [id])
+  itens      ItemCarrinho[]
+}
+
+model ItemCarrinho {
+  id         Int      @id @default(autoincrement())
+  idEstoque  Int
+  idCarrinho Int
+  quantidade Int
+  
+  estoque    Estoque  @relation(fields: [idEstoque], references: [id])
+  carrinho   Carrinho @relation(fields: [idCarrinho], references: [id])
+}
+
+model Pedido {
+  id         Int          @id @default(autoincrement())
+  valorTotal Float
+  status     String
+  idUsuario  Int
+  dataCompra DateTime     @default(now())
+  idEndereco Int
+  
+  usuario    Usuario      @relation(fields: [idUsuario], references: [id])
+  endereco   Endereco     @relation(fields: [idEndereco], references: [id])
+  itens      ItemPedido[]
+}
+
+model ItemPedido {
+  id               Int     @id @default(autoincrement())
+  idEstoque        Int
+  idPedido         Int
+  quantidadePedido Int
+  valorPedido      Float
+  
+  estoque          Estoque @relation(fields: [idEstoque], references: [id])
+  pedido           Pedido  @relation(fields: [idPedido], references: [id])
 }
