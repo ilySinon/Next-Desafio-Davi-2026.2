@@ -19,7 +19,7 @@ const anton = Anton({
 
 export const metadata: Metadata = {
   title: "Loja Tricolor",
-  description: "Loja do Fluminense",
+  description: "Loja de vendas de produtos do Fluminense",
 };
 
 export default function RootLayout({
