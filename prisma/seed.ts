@@ -6,79 +6,98 @@ const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
-  const products = [
-    {
-      title: 'Wireless Mouse',
-      description: 'A smooth and responsive wireless mouse.',
-      price: 29.99,
-      createdAt: new Date(),
+  await prisma.usuario.upsert({
+    where: { email: 'admin@tricolor.com' },
+    update: {},
+    create: {
+      nome: 'Administrador',
+      email: 'admin@tricolor.com',
+      senha: 'senha-criptografada-aqui',
+      imagemPerfil: 'ainda vou colocar as imagens',
+      endereco: {
+        create: {
+          rua: 'Rua Álvaro Chaves',
+          bairro: 'Laranjeiras',
+          numero: '41',
+          cidade: 'Rio de Janeiro',
+          estado: 'RJ',
+          cep: '22231-200'
+        }
+      }
     },
-    {
-      title: 'Mechanical Keyboard',
-      description: 'A durable mechanical keyboard with RGB lighting.',
-      price: 89.99,
-      createdAt: new Date(),
-    },
-    {
-      title: 'Noise Cancelling Headphones',
-      description: 'Comfortable headphones with active noise cancelling.',
-      price: 199.99,
-      createdAt: new Date(),
-    },
-    {
-      title: '4K Monitor',
-      description: 'A high-resolution 4K monitor for professional use.',
-      price: 399.99,
-      createdAt: new Date(),
-    },
-    {
-      title: 'USB-C Hub',
-      description: 'A versatile USB-C hub with multiple ports.',
-      price: 49.99,
-      createdAt: new Date(),
-    },
-    {
-      title: 'Portable SSD',
-      description: 'A fast and portable SSD with 1TB capacity.',
-      price: 129.99,
-      createdAt: new Date(),
-    },
-    {
-      title: 'Bluetooth Speaker',
-      description: 'A compact Bluetooth speaker with excellent sound quality.',
-      price: 59.99,
-      createdAt: new Date(),
-    },
-    {
-      title: 'Smartwatch',
-      description: 'A stylish smartwatch with fitness tracking features.',
-      price: 149.99,
-      createdAt: new Date(),
-    },
-    {
-      title: 'Gaming Chair',
-      description: 'An ergonomic gaming chair with lumbar support.',
-      price: 249.99,
-      createdAt: new Date(),
-    },
-    {
-      title: 'Webcam',
-      description: 'A high-definition webcam for video conferencing.',
-      price: 79.99,
-      createdAt: new Date(),
-    },
-  ];
+  });
 
-  for (const product of products) {
-    await prisma.product.create({
-      data: product,
-    });
-  }
+  await prisma.tamanho.deleteMany();
+  
+  const tamanhoP = await prisma.tamanho.create({ data: { nomeTamanho: 'P', ordemTamanhos: 1 } });
+  const tamanhoM = await prisma.tamanho.create({ data: { nomeTamanho: 'M', ordemTamanhos: 2 } });
+  const tamanhoG = await prisma.tamanho.create({ data: { nomeTamanho: 'G', ordemTamanhos: 3 } });
+
+  const categoriaCamisas = await prisma.categoria.create({
+    data: {
+      nomeCategoria: 'Camisas de Jogo',
+      descricaoCategoria: 'Camisas oficiais do Fluminense',
+      imagemCategoria: 'ainda vou colocar as imagens'
+    }
+  });
+
+  await prisma.produto.create({
+    data: {
+      nomeProduto: 'Camisa Oficial Fluminense 2024',
+      produtoDescricao: 'Camisa oficial tricolor, tecido respirável e super confortável.',
+      idCategoriaProduto: categoriaCamisas.id,
+      variacoes: {
+        create: {
+          nomeCor: 'Tricolor (Verde, Branco e Grená)',
+          nomeGenero: 'Masculino',
+          preco: 349.90,
+          precoVenda: 299.90,
+          codigoProduto: 19022024,
+          imagens: {
+            create: [
+              { nomeImagem: 'ainda vou colocar as imagens' },
+              { nomeImagem: 'ainda vou colocar as imagens' }
+            ]
+          },
+          estoques: {
+            create: [
+              { idTamanho: tamanhoP.id, quantidade: 15 },
+              { idTamanho: tamanhoM.id, quantidade: 30 },
+              { idTamanho: tamanhoG.id, quantidade: 10 }
+            ]
+          }
+        }
+      }
+    }
+  });
+
+  await prisma.produto.create({
+    data: {
+      nomeProduto: 'Casaco de Frio Fluminense',
+      produtoDescricao: 'Casaco corta-vento na cor grená.',
+      idCategoriaProduto: categoriaCamisas.id,
+      variacoes: {
+        create: {
+          nomeCor: 'Grená',
+          nomeGenero: 'Unissex',
+          preco: 250.00,
+          imagens: {
+            create: [{ nomeImagem: 'ainda vou colocar as imagens' }]
+          },
+          estoques: {
+            create: [
+              { idTamanho: tamanhoM.id, quantidade: 5 },
+              { idTamanho: tamanhoG.id, quantidade: 2 }
+            ]
+          }
+        }
+      }
+    }
+  });
 }
 
 main()
-  .catch((e) => {
-    console.error(e);
+  .catch(() => {
     process.exit(1);
   })
   .finally(async () => {
