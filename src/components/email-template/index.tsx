@@ -45,10 +45,10 @@ export const KoalaWelcomeEmail = ({
             alt="Koala"
             className="mx-auto"
           />
-          <Text className="text-[16px] leading-[26px]">
+          <Text className="text-[16px] leading-6.5">
             Hi {userFirstname}, (@{userEmail}, (@{userMensagem}))
           </Text>
-          <Text className="text-[16px] leading-[26px]">
+          <Text className="text-[16px] leading-6.5">
             Welcome to Koala, the sales intelligence platform that helps you
             uncover qualified leads and close deals faster.
           </Text>
@@ -60,7 +60,7 @@ export const KoalaWelcomeEmail = ({
               Get started
             </Button>
           </Section>
-          <Text className="text-[16px] leading-[26px]">
+          <Text className="text-[16px] leading-6.5">
             Best,
             <br />
             The Koala team
