@@ -19,7 +19,6 @@ model Usuario {
   email        String      @unique
   senha        String
   imagemPerfil String?
-  
   endereco    Endereco?
   avaliacoes   Avaliacao[]
   carrinhos    Carrinho[]
@@ -36,7 +35,6 @@ model Endereco {
   cidade      String
   estado      String
   cep         String
-  
   usuario    Usuario  @relation(fields: [idUsuario], references: [id])
   pedidos     Pedido[]
 }
@@ -46,7 +44,6 @@ model Categoria {
   nomeCategoria      String
   imagemCategoria    String?
   descricaoCategoria String?
-  
   produtos           Produto[]
 }
 
@@ -55,7 +52,6 @@ model Produto {
   nomeProduto        String
   produtoDescricao   String
   idCategoriaProduto Int
-  
   categoria          Categoria         @relation(fields: [idCategoriaProduto], references: [id])
   avaliacoes         Avaliacao[]
   variacoes          VariacaoProduto[]
@@ -67,7 +63,6 @@ model Avaliacao {
   idProduto  Int
   comentario String?
   nota       Int
-  
   usuario    Usuario  @relation(fields: [idUsuario], references: [id])
   produto    Produto  @relation(fields: [idProduto], references: [id])
 }
@@ -80,7 +75,6 @@ model VariacaoProduto {
   preco         Float
   precoVenda    Float?
   codigoProduto Int?
-  
   produto       Produto         @relation(fields: [idProduto], references: [id])
   imagens       ImagemProduto[]
   estoques      Estoque[]
@@ -90,7 +84,6 @@ model ImagemProduto {
   id            String          @id @default(uuid())
   idItemProduto Int
   nomeImagem    String
-  
   variacao      VariacaoProduto @relation(fields: [idItemProduto], references: [id])
 }
 
@@ -98,7 +91,6 @@ model Tamanho {
   id            Int       @id @default(autoincrement())
   nomeTamanho   String
   ordemTamanhos Int
-  
   estoques      Estoque[]
 }
 
@@ -107,7 +99,6 @@ model Estoque {
   idItem        Int
   idTamanho     Int
   quantidade    Int
-  
   variacao      VariacaoProduto @relation(fields: [idItem], references: [id])
   tamanho       Tamanho         @relation(fields: [idTamanho], references: [id])
   itensCarrinho ItemCarrinho[]
@@ -118,7 +109,6 @@ model Carrinho {
   id         Int            @id @default(autoincrement())
   idUsuario  Int
   valorTotal Float
-  
   usuario    Usuario        @relation(fields: [idUsuario], references: [id])
   itens      ItemCarrinho[]
 }
@@ -128,7 +118,6 @@ model ItemCarrinho {
   idEstoque  Int
   idCarrinho Int
   quantidade Int
-  
   estoque    Estoque  @relation(fields: [idEstoque], references: [id])
   carrinho   Carrinho @relation(fields: [idCarrinho], references: [id])
 }
@@ -140,7 +129,6 @@ model Pedido {
   idUsuario  Int
   dataCompra DateTime     @default(now())
   idEndereco Int
-  
   usuario    Usuario      @relation(fields: [idUsuario], references: [id])
   endereco   Endereco     @relation(fields: [idEndereco], references: [id])
   itens      ItemPedido[]
@@ -152,7 +140,6 @@ model ItemPedido {
   idPedido         Int
   quantidadePedido Int
   valorPedido      Float
-  
   estoque          Estoque @relation(fields: [idEstoque], references: [id])
   pedido           Pedido  @relation(fields: [idPedido], references: [id])
 }
