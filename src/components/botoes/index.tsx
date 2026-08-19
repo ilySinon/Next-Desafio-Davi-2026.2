@@ -72,7 +72,7 @@ type BotaoCategoriaProps = {
 
 export function BotaoCategoria({ texto, href, ativo = false }: BotaoCategoriaProps) {
   const estiloAtivo = ativo
-    ? "border-[var(--var-grenaCard)] bg-[var(--var-grenaCard)] text-white"
+    ? "border-(--var-grenaCard) bg-(--var-grenaCard) text-white"
     : "border-gray-300 bg-white text-black hover:bg-gray-100";
 
   return (
