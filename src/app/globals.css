@@ -1,10 +1,20 @@
 @import "tailwindcss";
 
+:root {
+  --var-verdeGradiante: #004C23;
+  --var-grenaGradiante: #65001A;
+  --var-pretoGradiante: #00100C;
+  --var-verdeCard: #004e28;
+  --var-brancoCard: #e5e4de;
+  --var-grenaCard: #7a1226;
+
+  --var-Creme: #F8F5EC;
+}
+
 @theme {
   --font-anton: var(--font-anton);
   --font-inter: var(--font-inter);
 
-  
   --breakpoint-md: 768px;
   --breakpoint-lg: 1280px;
   --breakpoint-xl: 1920px;
