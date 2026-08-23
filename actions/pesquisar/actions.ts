@@ -2,7 +2,7 @@
 
 import prisma from "@/src/lib/db"
 
-const itemsPorPag = 6;
+const itemsPorPag = 12;
 
 export async function filtrarPesquisaProdutos(query: string, currentPage: number){
 
