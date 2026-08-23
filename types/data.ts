@@ -11,3 +11,9 @@ export type Produto = Prisma.ProdutoGetPayload<{
     };
   };
 }>;
+
+export type Usuario = Prisma.UsuarioGetPayload<{
+  include: {
+    endereco: true;
+  };
+}>;
