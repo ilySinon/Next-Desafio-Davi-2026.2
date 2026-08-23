@@ -2,8 +2,17 @@
 
 import prisma from "@/src/lib/db"
 
-export default async function getProdutosCarrossel() {
+const itemsPorPag = 12;
+
+export default async function getProdutosCategoria(query: string, currentPage: number) {
+  const offset = (currentPage - 1) * itemsPorPag;
+
+  const filtro = (query && query !== "todas") 
+    ? { categoria: { nomeCategoria: { equals: query, mode: "insensitive" as const } } } 
+    : {};
+
   const produtos = await prisma.produto.findMany({
+    where: filtro,
     include: {
       categoria: true,
       variacoes: {
@@ -13,9 +22,18 @@ export default async function getProdutosCarrossel() {
         }
       }
     },
+    take: itemsPorPag,
+    skip: offset,
+    orderBy: {
+      nomeProduto: "asc"
+    }
   });
 
-  return produtos;
+  const count = await prisma.produto.count({
+    where: filtro
+  });
+
+  const totalPages = Math.ceil(count / itemsPorPag); 
+
+  return { produtos, count, totalPages };
 }
-
-
