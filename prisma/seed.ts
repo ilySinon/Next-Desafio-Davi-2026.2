@@ -51,7 +51,7 @@ async function main() {
 
   const categoriaMangaLonga = await prisma.categoria.create({
     data: {
-      nomeCategoria: 'Manga Longa',
+      nomeCategoria: 'Manga-Longa',
       descricaoCategoria: 'Camisas de manga longa',
       imagemCategoria: '/basicas/Camisa5.png'
     }
@@ -67,7 +67,7 @@ async function main() {
 
   const categoriaCalcas = await prisma.categoria.create({
     data: {
-      nomeCategoria: 'Calças',
+      nomeCategoria: 'Calcas',
       descricaoCategoria: 'Calças oficiais',
       imagemCategoria: '/basicas/Camisa9.png'
     }

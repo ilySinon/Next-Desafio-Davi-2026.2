@@ -19,7 +19,7 @@ model Usuario {
   email        String      @unique
   senha        String
   imagemPerfil String?
-  endereco    Endereco?
+  endereco     Endereco?
   avaliacoes   Avaliacao[]
   carrinhos    Carrinho[]
   pedidos      Pedido[]
@@ -27,7 +27,7 @@ model Usuario {
 
 model Endereco {
   id          Int      @id @default(autoincrement())
-  idUsuario   Int @unique
+  idUsuario   Int      @unique
   rua         String  
   bairro      String
   numero      String
@@ -35,7 +35,7 @@ model Endereco {
   cidade      String
   estado      String
   cep         String
-  usuario    Usuario  @relation(fields: [idUsuario], references: [id])
+  usuario     Usuario  @relation(fields: [idUsuario], references: [id])
   pedidos     Pedido[]
 }
 
@@ -52,6 +52,7 @@ model Produto {
   nomeProduto        String
   produtoDescricao   String
   idCategoriaProduto Int
+  lancamento         DateTime          @default(now())
   categoria          Categoria         @relation(fields: [idCategoriaProduto], references: [id])
   avaliacoes         Avaliacao[]
   variacoes          VariacaoProduto[]
@@ -95,12 +96,12 @@ model Tamanho {
 }
 
 model Estoque {
-  id            Int             @id @default(autoincrement())
-  idItem        Int
-  idTamanho     Int
-  quantidade    Int
-  variacao      VariacaoProduto @relation(fields: [idItem], references: [id])
-  tamanho       Tamanho         @relation(fields: [idTamanho], references: [id])
+  id           Int            @id @default(autoincrement())
+  idItem       Int
+  idTamanho    Int
+  quantidade   Int
+  variacao     VariacaoProduto @relation(fields: [idItem], references: [id])
+  tamanho      Tamanho         @relation(fields: [idTamanho], references: [id])
   itensCarrinho ItemCarrinho[]
   itensPedido   ItemPedido[]
 }
