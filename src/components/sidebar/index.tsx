@@ -3,10 +3,18 @@
 import Image from "next/image";
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Home, Package, LogOut, Menu } from "lucide-react";
+import { Logout } from "../../../actions/LoginCadastro/Logout/actions";
 
 export function SidebarAdmin() {
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    await Logout();
+    router.push("/login");
+  };
 
   return (
     <>
@@ -28,7 +36,10 @@ export function SidebarAdmin() {
           <Link href="/dashboard" className="bg-[#0A4B27] p-2.5 rounded-xl text-white shadow-sm cursor-pointer">
             <Package size={28} />
           </Link>
-          <button className="text-white hover:opacity-80 transition-opacity ml-2 cursor-pointer">
+          <button 
+            onClick={handleLogout}
+            className="text-white hover:opacity-80 transition-opacity ml-2 cursor-pointer"
+          >
             <LogOut size={28} />
           </button>
         </div>
@@ -95,7 +106,10 @@ export function SidebarAdmin() {
         </nav>
 
         <div className="px-4 mt-auto">
-          <button className="w-full flex items-center gap-4 px-4 py-4 rounded-2xl text-white hover:bg-white/10 transition-colors overflow-hidden cursor-pointer">
+          <button 
+            onClick={handleLogout}
+            className="w-full flex items-center gap-4 px-4 py-4 rounded-2xl text-white hover:bg-white/10 transition-colors overflow-hidden cursor-pointer"
+          >
             <LogOut size={28} className="shrink-0" />
             <span className={`font-inter font-bold text-sm transition-all duration-300 shrink-0 whitespace-nowrap ${
               isOpen ? "opacity-100 w-auto" : "opacity-0 w-0"
