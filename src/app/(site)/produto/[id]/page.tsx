@@ -2,9 +2,8 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { CardProduto, CardProdutoMenor } from "../../../../components/Cards";
 import { ProdutoInfos } from "../../../../components/ProdutoComponentes/ProdutoInfos";
-import { BotoesTamanhoProduto } from "../../../../components/ProdutoComponentes/botoesTamanhoProduto";
-import BotoesAcoes from "../../../../components/ProdutoComponentes/botoesAcoesProdutos";
 import BeneficiosProdutos from "../../../../components/ProdutoComponentes/beneficiosProdutos";
+import ControlesProduto from "../../../../components/ProdutoComponentes/ControlesProduto";
 import getProdutos from "@/actions/produtos/actions";
 
 export default async function PaginaProduto({ params }: { params: Promise<{ id: string }> }) {
@@ -20,11 +19,11 @@ export default async function PaginaProduto({ params }: { params: Promise<{ id: 
     );
   }
 
-  const imagens = produto.variacoes[0]?.imagens || [];
-  
+  const variacaoAtual = produto.variacoes[0];
+  const imagens = variacaoAtual?.imagens || [];
   const imagemPrincipal = imagens[0]?.nomeImagem || "/basicas/Teste.png";
 
-  const precoFormatado = produto.variacoes[0]?.preco?.toLocaleString('pt-BR', {
+  const precoFormatado = variacaoAtual?.preco?.toLocaleString('pt-BR', {
     style: 'currency',
     currency: 'BRL'
   }) || "R$ 0,00";
@@ -69,9 +68,9 @@ export default async function PaginaProduto({ params }: { params: Promise<{ id: 
               hrefVoltar="/"
             />
 
-            <BotoesTamanhoProduto />
-
-            <BotoesAcoes />
+            {variacaoAtual && (
+              <ControlesProduto idVariacao={variacaoAtual.id} />
+            )}
 
             <BeneficiosProdutos />
           </div>
