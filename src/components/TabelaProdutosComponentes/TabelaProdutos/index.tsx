@@ -1,42 +1,46 @@
 "use client";
 
 import { useState } from "react";
-import { Eye, Pencil, Trash2, ChevronLeft, ChevronRight } from "lucide-react";
+import { Eye, Pencil, Trash2 } from "lucide-react";
 import ModalVisualizar from "../../Modais/ModalVisualizar";
 import ModalEditar from "../../Modais/ModalEditar";
 import ModalExcluir from "../../Modais/ModalExcluir";
 import { Produto } from "@/types/data";
+import Paginacao from "../../Paginacao";
+import PesquisaTabela from "../PesquisarTabela";
+import ModalCriar from "../../Modais/ModalCriar";
+
+type Categoria = {
+  id: number;
+  nomeCategoria: string;
+};
 
 type ProdutosTabelaProps = {
   produtos: Produto[]
-}
+  totalDeProdutos: number;
+  totalPages: number;
+  categorias: Categoria[];
+};
 
-export function TabelaProdutos({ produtos }: ProdutosTabelaProps) {
+export function TabelaProdutos({ produtos, totalDeProdutos, totalPages = 1, categorias }: ProdutosTabelaProps) {
+  const [isCriarOpen, setIsCriarOpen] = useState(false);
   const [isVisualizarOpen, setIsVisualizarOpen] = useState(false);
   const [isEditarOpen, setIsEditarOpen] = useState(false);
   const [isExcluirOpen, setIsExcluirOpen] = useState(false);
+  const [produtoSelecionado, setProdutoSelecionado] = useState<Produto | null>(null);
 
   return (
     <>
       <div className="bg-white rounded-3xl p-6 lg:p-10 shadow-sm overflow-x-auto">
+        <PesquisaTabela />
         <table className="w-full min-w-200 text-left border-collapse">
           <thead>
             <tr className="border-b border-gray-200">
-              <th className="font-inter text-gray-500 uppercase text-xs lg:text-sm tracking-wider pb-4 font-normal">
-                Imagem
-              </th>
-              <th className="font-inter text-gray-500 uppercase text-xs lg:text-sm tracking-wider pb-4 font-normal">
-                Nome
-              </th>
-              <th className="font-inter text-gray-500 uppercase text-xs lg:text-sm tracking-wider pb-4 font-normal">
-                Quantidade
-              </th>
-              <th className="font-inter text-gray-500 uppercase text-xs lg:text-sm tracking-wider pb-4 font-normal">
-                Preço
-              </th>
-              <th className="font-inter text-gray-500 uppercase text-xs lg:text-sm tracking-wider pb-4 font-normal text-center">
-                Ações
-              </th>
+              <th className="font-inter text-gray-500 uppercase text-xs lg:text-sm tracking-wider pb-4 font-normal">Imagem</th>
+              <th className="font-inter text-gray-500 uppercase text-xs lg:text-sm tracking-wider pb-4 font-normal">Nome</th>
+              <th className="font-inter text-gray-500 uppercase text-xs lg:text-sm tracking-wider pb-4 font-normal">Quantidade</th>
+              <th className="font-inter text-gray-500 uppercase text-xs lg:text-sm tracking-wider pb-4 font-normal">Preço</th>
+              <th className="font-inter text-gray-500 uppercase text-xs lg:text-sm tracking-wider pb-4 font-normal text-center">Ações</th>
             </tr>
           </thead>
           <tbody>
@@ -47,8 +51,8 @@ export function TabelaProdutos({ produtos }: ProdutosTabelaProps) {
                 currency: 'BRL'
               });
 
-              const quantidadeTotal = produto.variacoes?.reduce((accVariacao, variacao) => {
-                const totalEstoque = variacao.estoques?.reduce((accEstoque, estoque) => {
+              const quantidadeTotal = produto.variacoes?.reduce((accVariacao: number, variacao: any) => {
+                const totalEstoque = variacao.estoques?.reduce((accEstoque: number, estoque: any) => {
                   return accEstoque + (estoque.quantidade || 0);
                 }, 0) || 0;
                 return accVariacao + totalEstoque;
@@ -77,19 +81,30 @@ export function TabelaProdutos({ produtos }: ProdutosTabelaProps) {
                   <td className="py-4">
                     <div className="flex items-center justify-center gap-4">
                       <button 
-                        onClick={() => setIsVisualizarOpen(true)}
+                        onClick={() => {
+                          setProdutoSelecionado(produto);
+                          setIsVisualizarOpen(true);
+                        }}
                         className="text-gray-400 hover:text-black transition-colors"
                       >
                         <Eye size={20} />
                       </button>
+                      
                       <button 
-                        onClick={() => setIsEditarOpen(true)}
+                        onClick={() => {
+                          setProdutoSelecionado(produto);
+                          setIsEditarOpen(true);
+                        }}
                         className="text-gray-400 hover:text-blue-600 transition-colors"
                       >
                         <Pencil size={20} />
                       </button>
+                      
                       <button 
-                        onClick={() => setIsExcluirOpen(true)}
+                        onClick={() => {
+                          setProdutoSelecionado(produto);
+                          setIsExcluirOpen(true);
+                        }}
                         className="text-gray-400 hover:text-red-600 transition-colors"
                       >
                         <Trash2 size={20} />
@@ -103,29 +118,40 @@ export function TabelaProdutos({ produtos }: ProdutosTabelaProps) {
         </table>
       </div>
 
-      <div className="flex items-center justify-center gap-4 mt-8">
-        <button className="text-black hover:text-gray-600 transition-colors">
-          <ChevronLeft size={24} />
-        </button>
-        <span className="font-anton text-xl text-black">1</span>
-        <button className="text-black hover:text-gray-600 transition-colors">
-          <ChevronRight size={24} />
-        </button>
-      </div>
+      <Paginacao totalPages={totalPages}/>
+
+      <ModalCriar 
+        isOpen={isCriarOpen} 
+        onClose={() => setIsCriarOpen(false)}
+        categorias={categorias}
+      />
 
       <ModalVisualizar 
         isOpen={isVisualizarOpen} 
-        onClose={() => setIsVisualizarOpen(false)} 
+        onClose={() => {
+          setIsVisualizarOpen(false);
+          setProdutoSelecionado(null);
+        }}
+        produto={produtoSelecionado}
       />
       
       <ModalEditar 
         isOpen={isEditarOpen} 
-        onClose={() => setIsEditarOpen(false)} 
+        onClose={() => {
+          setIsEditarOpen(false);
+          setProdutoSelecionado(null);
+        }} 
+        produto={produtoSelecionado}
+        categorias={categorias}
       />
       
       <ModalExcluir 
         isOpen={isExcluirOpen} 
-        onClose={() => setIsExcluirOpen(false)} 
+        onClose={() => {
+          setIsExcluirOpen(false);
+          setProdutoSelecionado(null);
+        }} 
+        produto={produtoSelecionado}
       />
     </>
   );
