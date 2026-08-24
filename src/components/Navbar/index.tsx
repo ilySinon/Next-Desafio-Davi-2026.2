@@ -6,6 +6,8 @@ import Link from "next/link";
 import { Search, User, ShoppingBag, Menu, X } from "lucide-react";
 import { usePathname, useSearchParams } from "next/navigation"; 
 import Pesquisar from "../PesquisarComponente/index";
+import { obterUsuario } from "@/actions/logado/action";
+
 
 export default function Navbar() {
   const pathname = usePathname(); 
@@ -17,6 +19,7 @@ export default function Navbar() {
 
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isPesquisarOpen, setisPesquisarOpen] = useState(false);
+  const [usuario, setUsuario] = useState<any>(null);
 
   const toggleNav = () => setIsNavOpen(!isNavOpen);
   const togglePesquisar = () => setisPesquisarOpen(!isPesquisarOpen);
@@ -34,6 +37,14 @@ export default function Navbar() {
     setisPesquisarOpen(false)
     setIsNavOpen(false)
   }, [pathname, searchParams])
+
+  useEffect(() => {
+    async function checarLogado() {
+      const dados = await obterUsuario();
+      setUsuario(dados);
+    }
+    checarLogado();
+  }, []);
 
   const handleMobileSearch = () => {
     if (isNavOpen) {
@@ -83,8 +94,8 @@ export default function Navbar() {
         <button className="hover:scale-110 transition-transform" onClick={togglePesquisar}>
           <Search size={24}/>
         </button>
-        <Link className="hover:scale-110 transition-transform" href="/login">
-          <User size={24} />
+        <Link className="hover:scale-110 transition-transform" href={usuario ? "/perfil" : "/login"}>
+          <User size={24} className={usuario ? "text-red-500" : "text-black"} />
         </Link>
         <Link className="hover:scale-110 transition-transform" href="/carrinho">
           <ShoppingBag size={24} />
@@ -113,6 +124,9 @@ export default function Navbar() {
           </Link>
           <Link className={`font-inter text-lg transition-colors ${isDashboard ? 'text-red-500' : 'text-green-500'}`} href="/dashboard" onClick={toggleNav}>
             DASHBOARD
+          </Link>
+          <Link className={`font-inter text-lg transition-colors ${pathname === '/perfil' ? 'text-red-500' : 'text-green-500'}`} href={usuario ? "/perfil" : "/login"} onClick={toggleNav}>
+            {usuario ? 'MEU PERFIL' : 'LOGIN'}
           </Link>
         </div>
       )}
