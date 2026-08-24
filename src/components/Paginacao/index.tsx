@@ -1,12 +1,13 @@
 'use client';
 
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function Paginacao({ totalPages }: { totalPages: number }) {
     const pathname = usePathname();
     const searchParams = useSearchParams();
+    const router = useRouter();
     
     const currentPage = Number(searchParams.get('page') || 1);
 
@@ -25,9 +26,24 @@ export default function Paginacao({ totalPages }: { totalPages: number }) {
                 <ChevronLeft size={24} />
             </Link>
 
-            <span className="font-anton text-xl text-black">
-                {currentPage}
-            </span>
+            <input
+                key={currentPage}
+                type="number"
+                defaultValue={currentPage}
+                min={1}
+                max={totalPages}
+                onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                        let novaPagina = parseInt(e.currentTarget.value);
+                        
+                        if (isNaN(novaPagina) || novaPagina < 1) novaPagina = 1;
+                        if (novaPagina > totalPages) novaPagina = totalPages;
+                        
+                        router.push(createPageUrl(novaPagina));
+                    }
+                }}
+                className="w-16 bg-transparent text-center font-anton text-xl text-black outline-none border-b-2 border-transparent focus:border-black transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+            />
 
             <Link 
                 href={createPageUrl(currentPage + 1)}
