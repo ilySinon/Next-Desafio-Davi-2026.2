@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Plus, Minus, Trash2 } from "lucide-react";
 import { Produto } from "@/types/data";
 
 export function CardGrande() {
@@ -33,7 +33,7 @@ type CardProps = {
 
 export function CardNormal({ produto }: CardProps) {
   const imagem = produto.variacoes?.[0]?.imagens?.[0]?.nomeImagem || '/basicas/Teste.png';
-  const preco = produto.variacoes?.[0]?.precoVenda || 0;
+  const preco = produto.variacoes?.[0]?.precoVenda || produto.variacoes?.[0]?.preco || 0;
   const precoFormatado = preco.toLocaleString('pt-BR', {
     style: 'currency',
     currency: 'BRL'
@@ -167,5 +167,94 @@ export function CardProdutoMenor({ imagem, alt = "Miniatura do produto", isActiv
         className="object-cover" 
       />
     </button>
+  );
+}
+
+type CardCarrinhoProps = {
+  idItem: number;
+  imagem: string;
+  nomeProduto: string;
+  tamanho: string;
+  preco: number;
+  quantidade: number;
+  onIncrementar: (idItem: number) => void;
+  onDecrementar: (idItem: number) => void;
+  onRemover: (idItem: number) => void;
+};
+
+export function CardCarrinho({
+  idItem,
+  imagem,
+  nomeProduto,
+  tamanho,
+  preco,
+  quantidade,
+  onIncrementar,
+  onDecrementar,
+  onRemover
+}: CardCarrinhoProps) {
+  const precoFormatado = preco.toLocaleString('pt-BR', {
+    style: 'currency',
+    currency: 'BRL'
+  });
+
+  return (
+    <div className="w-full flex gap-4 p-4 bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+      <div className="relative w-24 h-24 lg:w-32 lg:h-32 bg-gray-100 rounded-xl overflow-hidden shrink-0">
+        <Image
+          src={imagem}
+          alt={nomeProduto}
+          fill
+          sizes="(max-width: 768px) 100px, 150px"
+          className="object-cover"
+        />
+      </div>
+
+      <div className="flex flex-col justify-between flex-1 py-1">
+        <div className="flex justify-between items-start gap-2">
+          <div className="flex flex-col">
+            <span className="font-inter font-bold text-sm lg:text-base text-black line-clamp-2">
+              {nomeProduto}
+            </span>
+            <span className="font-inter text-xs text-gray-500 mt-1 uppercase">
+              Tamanho: {tamanho}
+            </span>
+          </div>
+          
+          <button 
+            onClick={() => onRemover(idItem)}
+            className="text-gray-400 hover:text-red-500 transition-colors shrink-0 p-1"
+            title="Remover item"
+          >
+            <Trash2 size={18} />
+          </button>
+        </div>
+
+        <div className="flex justify-between items-end mt-4">
+          <div className="flex items-center bg-gray-100 rounded-full border border-gray-200">
+            <button 
+              onClick={() => onDecrementar(idItem)}
+              className="p-2 text-gray-500 hover:text-black hover:bg-gray-200 rounded-l-full transition-colors disabled:opacity-50"
+              disabled={quantidade <= 1}
+            >
+              <Minus size={14} />
+            </button>
+            <span className="font-inter font-bold text-sm text-black w-8 text-center select-none">
+              {quantidade}
+            </span>
+            <button 
+              onClick={() => onIncrementar(idItem)}
+              className="p-2 text-gray-500 hover:text-black hover:bg-gray-200 rounded-r-full transition-colors"
+            >
+              <Plus size={14} />
+            </button>
+          </div>
+          
+          <span className="font-inter font-bold text-base lg:text-lg text-[#7a1226]">
+            {precoFormatado}
+          </span>
+        </div>
+      </div>
+    </div>
   );
 }
