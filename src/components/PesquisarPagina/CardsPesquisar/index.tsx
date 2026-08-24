@@ -1,9 +1,10 @@
 import { CardNormal } from "../../../components/Cards";
 import { SearchX } from "lucide-react";
 import Paginacao from "../../Paginacao"; 
+import { Produto } from "@/types/data"
 
 type CardsPesquisarProps = {
-  produtos: any[];
+  produtos: Produto[];
   titulo: string;
   totalPages?: number;
 };
