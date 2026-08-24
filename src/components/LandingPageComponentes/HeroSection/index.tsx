@@ -22,13 +22,8 @@ export default function HeroSection() {
             <BotaoComIcone
               texto="COMPRAR AGORA"
               href="/categorias"
-              cor="bg-[var(--var-Creme)] text-black hover:bg-gray-200"
+              cor="bg-(--var-Creme) text-black hover:bg-gray-200"
               icone={ArrowRight}
-            />
-            <Botao
-              texto="NOSSA HISTÓRIA"
-              href="/sobre"
-              cor="border border-(--var-Creme) text-(--var-Creme) hover:bg-white/10"
             />
           </div>
         </div>
