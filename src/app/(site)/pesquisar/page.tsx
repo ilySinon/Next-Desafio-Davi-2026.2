@@ -10,10 +10,10 @@ export default async function PaginaPesquisa({
         page?: string;
     }>
 }) {
-
-    const params = await searchParams;
-    const query = params?.query || '';
-    const currentPage = Number(params?.page) || 1
+ 
+  const params = await searchParams;
+  const query = params?.query || '';
+  const currentPage = Number(params?.page) || 1;
 
   const {produtos, count, totalPages} = await filtrarPesquisaProdutos(query, currentPage)
 
