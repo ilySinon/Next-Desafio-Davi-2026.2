@@ -25,6 +25,7 @@ export default async function GerenciamentoProdutos({
         <TituloProdutos 
           titulo="Gerenciamento de Produtos" 
           descricao="Catálogo de camisas oficiais da loja tricolor." 
+          categorias={categorias}
         />
         <TabelaProdutos 
           produtos={produtos} 

@@ -109,7 +109,7 @@ export default function ModalCriar({ isOpen, onClose, categorias }: ModalCriarPr
               <label className="font-inter text-xs lg:text-sm text-slate-500">Categoria</label>
               <select name="idCategoriaProduto" required className="w-full bg-transparent border border-gray-300 rounded-lg px-3 py-2 text-sm text-black font-inter outline-none focus:border-gray-500 transition-colors">
                 <option value="">Selecione uma categoria...</option>
-                {categorias.map((cat) => (
+                {categorias?.map((cat) => (
                   <option key={cat.id} value={cat.id}>
                     {cat.nomeCategoria}
                   </option>

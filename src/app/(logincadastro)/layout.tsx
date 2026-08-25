@@ -13,24 +13,19 @@ const anton = Anton({
   subsets: ["latin"],
 });
 
-
 export const metadata: Metadata = {
   title: "Loja Tricolor",
   description: "Loja de vendas de produtos do Fluminense",
 };
 
-export default function RootLayout({
+export default function SubLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR">
-      <body
-        className={`${inter.variable} ${anton.variable} antialiased`}
-      >
-        {children}
-      </body>
-    </html>
+    <div className={`${inter.variable} ${anton.variable} antialiased`}>
+      {children}
+    </div>
   );
 }

@@ -4,12 +4,18 @@ import { useState } from "react";
 import { Plus } from "lucide-react";
 import ModalCriar from "../../Modais/ModalCriar";
 
+type Categoria = {
+  id: number;
+  nomeCategoria: string;
+};
+
 type TituloProdutosProps = {
   titulo: string;
   descricao: string;
+  categorias: Categoria[];
 };
 
-export function TituloProdutos({ titulo, descricao }: TituloProdutosProps) {
+export function TituloProdutos({ titulo, descricao, categorias }: TituloProdutosProps) {
   const [isCriarOpen, setIsCriarOpen] = useState(false);
 
   return (
@@ -36,6 +42,7 @@ export function TituloProdutos({ titulo, descricao }: TituloProdutosProps) {
       <ModalCriar 
         isOpen={isCriarOpen} 
         onClose={() => setIsCriarOpen(false)} 
+        categorias={categorias}
       />
     </>
   );
