@@ -25,6 +25,8 @@ export function SidebarAdmin() {
             alt="Escudo Fluminense" 
             width={40}
             height={40}
+            priority
+            style={{ width: "auto", height: "auto" }}
             className="w-10 h-10 object-contain" 
           />
         </Link>
@@ -65,6 +67,8 @@ export function SidebarAdmin() {
             alt="Escudo Fluminense" 
             width={48}
             height={48}
+            priority
+            style={{ width: "auto", height: "auto" }}
             className="w-12 h-12 shrink-0 object-contain group-hover/logo:opacity-90 transition-opacity" 
           />
           <div className={`ml-4 transition-all duration-300 flex flex-col shrink-0 whitespace-nowrap ${
