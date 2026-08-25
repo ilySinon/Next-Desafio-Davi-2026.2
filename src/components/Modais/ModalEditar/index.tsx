@@ -190,7 +190,6 @@ export default function ModalEditar({ isOpen, onClose, produto, categorias }: Mo
                 <option value="1">P</option>
                 <option value="2">M</option>
                 <option value="3">G</option>
-                <option value="4">GG</option>
               </select>
             </div>
 

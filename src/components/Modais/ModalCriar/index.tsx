@@ -157,7 +157,6 @@ export default function ModalCriar({ isOpen, onClose, categorias }: ModalCriarPr
                 <option value="1">P</option>
                 <option value="2">M</option>
                 <option value="3">G</option>
-                <option value="4">GG</option>
               </select>
             </div>
 
