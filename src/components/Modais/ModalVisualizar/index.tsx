@@ -24,7 +24,7 @@ export default function ModalVisualizar({ isOpen, onClose, produto }: ModalVisua
   const categoriaNome = categoriasMap[produto.idCategoriaProduto] || "Não definida";
 
   const tamanhosMap: Record<number, string> = {
-    1: "P", 2: "M", 3: "G", 4: "GG"
+    1: "P", 2: "M", 3: "G"
   };
   const estoque = variacao?.estoques?.[0];
   const tamanhoNome = tamanhosMap[estoque?.idTamanho || 0] || "Não definido";
