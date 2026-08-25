@@ -7,6 +7,7 @@ import { obterDadosUsuario } from "@/actions/usuariosInfo/actions";
 import { Logout } from "@/actions/LoginCadastro/Logout/actions";
 import BoxPerfil from "../../../components/PerfilComponentes/BoxPerfil";
 import ModalPerfilUsuario from "../../../components/Modais/ModalPerfilUsuario";
+import ImagemPerfil from "../../../components/PerfilComponentes/ImagemPerfil";
 import { Usuario } from "../../../../types/data";
 
 export default function Perfil() {
@@ -44,8 +45,9 @@ export default function Perfil() {
 
   return (
     <main className="min-h-screen w-full pt-32 pb-12 px-6 flex flex-col items-center bg-[#F5F5DC]">
-      <div className="relative z-10 w-full max-w-4xl flex flex-col gap-8">
-        <h1 className="font-anton text-4xl lg:text-5xl text-black tracking-wide">
+      <div className="relative z-10 w-full max-w-4xl flex flex-col items-center gap-6">
+        
+        <h1 className="font-anton text-4xl lg:text-5xl text-black tracking-wide text-center">
           MEU PERFIL
         </h1>
 
